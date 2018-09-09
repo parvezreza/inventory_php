@@ -119,7 +119,7 @@
                     <span>Setting</span></a></li>
 
             <!-- user permission info -->
-            <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> <span>Logout</span></a>
+            <li><a href="logout.php"><i class="glyphicon glyphicon-log-out"></i> <span>Logout</span></a>
             </li>
 
         </ul>

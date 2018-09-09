@@ -1,3 +1,13 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: index.php");
+    exit;
+}
+?>
 <!doctype html>
 <html style="height: auto; min-height: 100%;">
 <head>
@@ -126,6 +136,22 @@
             color: white;
             font: 10px arial, san serif;
             text-align: left;
+        }
+        .select2-container--default .select2-selection--single {
+            border: 1px solid rgb(210, 214, 222);
+            border-radius: 0px;
+        }
+        .select2-container .select2-selection--single {
+            height: inherit;
+        }
+        .select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
+            padding: 4px 5px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 25px;
+        }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            margin-top: inherit;
         }
     </style>
 </head>

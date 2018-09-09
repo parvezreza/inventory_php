@@ -59,6 +59,9 @@ require_once 'include/db.php';
                             }
                         }
                         // Insert Data DB
+                        if(!$file_name){ // when photo are not selected
+                            $file_path = "<p>You did not select a file to upload.</p>";
+                        }
                         $product_name = $_POST['product_name'];
                         $sku = $_POST['sku'];
                         $price = $_POST['price'];
@@ -77,7 +80,7 @@ require_once 'include/db.php';
                         $st->bindParam(":sku", $sku, PDO::PARAM_STR);
                         $st->bindParam(":price", $price, PDO::PARAM_STR);
                         $st->bindParam(":qty", $qty, PDO::PARAM_STR);
-                       // $st->bindParam(":image", $file_path, PDO::PARAM_STR);
+                        $st->bindParam(":image", $file_path, PDO::PARAM_STR);
                         $st->bindParam(":description", $description, PDO::PARAM_STR);
                         $st->bindParam(":attribute_value_id", $attributes, PDO::PARAM_INT);
                         $st->bindParam(":brand_id", $brands, PDO::PARAM_INT);
@@ -141,7 +144,8 @@ require_once 'include/db.php';
                         $availability = $_POST['availability'];
                         $result = ['error' => true];
                         $date = date('Y-m-d H:i:s');
-                        $sql = "UPDATE products SET
+                        if(!$file_name){ // when photo are not selected
+                            $sql = "UPDATE products SET
                                       name = :name,
                                       sku = :sku,
                                       price = :price,
@@ -153,13 +157,28 @@ require_once 'include/db.php';
                                       store_id = :store_id, 
                                       status = :status
                                 WHERE id = :id";
+                        }else{
+                            $sql = "UPDATE products SET
+                                      name = :name,
+                                      sku = :sku,
+                                      price = :price,
+                                      qty = :qty,
+                                      image = :image,
+                                      description = :description,
+                                      attribute_value_id = :attribute_value_id,
+                                      brand_id = :brand_id, 
+                                      category_id = :category_id, 
+                                      store_id = :store_id, 
+                                      status = :status
+                                WHERE id = :id";
+                        }
                         $st = $db->prepare($sql);
                         $st->bindParam(":id", $product_id, PDO::PARAM_INT);
                         $st->bindParam(":name", $product_name, PDO::PARAM_STR);
                         $st->bindParam(":sku", $sku, PDO::PARAM_STR);
                         $st->bindParam(":price", $price, PDO::PARAM_STR);
                         $st->bindParam(":qty", $qty, PDO::PARAM_STR);
-                        //$st->bindParam(":image", $file_path, PDO::PARAM_STR);
+                        $st->bindParam(":image", $file_path, PDO::PARAM_STR);
                         $st->bindParam(":description", $description, PDO::PARAM_STR);
                         $st->bindParam(":attribute_value_id", $attributes, PDO::PARAM_INT);
                         $st->bindParam(":brand_id", $brands, PDO::PARAM_INT);

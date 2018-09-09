@@ -48,8 +48,7 @@ require_once 'include/db.php';
                         <form role="form" action="products.php" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="product_id" value="<?php echo $upResults['id']; ?>"/>
                             <div class="box-body">
-
-                                <?php //echo validation_errors(); ?>
+                                
                                 <div class="form-group">
                                     <label for="">Image Preview</label>
                                     <img src="<?php echo $upResults['image']?>" alt="<?php echo $upResults['name']?>" width="150" height="150" class="img-circle">
