@@ -144,20 +144,7 @@ require_once 'include/db.php';
                         $availability = $_POST['availability'];
                         $result = ['error' => true];
                         $date = date('Y-m-d H:i:s');
-                        if(!$file_name){ // when photo are not selected
-                            $sql = "UPDATE products SET
-                                      name = :name,
-                                      sku = :sku,
-                                      price = :price,
-                                      qty = :qty,
-                                      description = :description,
-                                      attribute_value_id = :attribute_value_id,
-                                      brand_id = :brand_id, 
-                                      category_id = :category_id, 
-                                      store_id = :store_id, 
-                                      status = :status
-                                WHERE id = :id";
-                        }else{
+                        if($file_name !=""){ // when photo are not selected
                             $sql = "UPDATE products SET
                                       name = :name,
                                       sku = :sku,
@@ -171,20 +158,46 @@ require_once 'include/db.php';
                                       store_id = :store_id, 
                                       status = :status
                                 WHERE id = :id";
+                            $st = $db->prepare($sql);
+                            $st->bindParam(":id", $product_id, PDO::PARAM_INT);
+                            $st->bindParam(":name", $product_name, PDO::PARAM_STR);
+                            $st->bindParam(":sku", $sku, PDO::PARAM_STR);
+                            $st->bindParam(":price", $price, PDO::PARAM_STR);
+                            $st->bindParam(":qty", $qty, PDO::PARAM_STR);
+                            $st->bindParam(":image", $file_path, PDO::PARAM_STR);
+                            $st->bindParam(":description", $description, PDO::PARAM_STR);
+                            $st->bindParam(":attribute_value_id", $attributes, PDO::PARAM_INT);
+                            $st->bindParam(":brand_id", $brands, PDO::PARAM_INT);
+                            $st->bindParam(":category_id", $category, PDO::PARAM_INT);
+                            $st->bindParam(":store_id", $store, PDO::PARAM_INT);
+                            $st->bindParam(":status", $availability, PDO::PARAM_INT);
+                        }else{
+                            $sql = "UPDATE products SET
+                                      name = :name,
+                                      sku = :sku,
+                                      price = :price,
+                                      qty = :qty,
+                                      description = :description,
+                                      attribute_value_id = :attribute_value_id,
+                                      brand_id = :brand_id, 
+                                      category_id = :category_id, 
+                                      store_id = :store_id, 
+                                      status = :status
+                                WHERE id = :id";
+                            $st = $db->prepare($sql);
+                            $st->bindParam(":id", $product_id, PDO::PARAM_INT);
+                            $st->bindParam(":name", $product_name, PDO::PARAM_STR);
+                            $st->bindParam(":sku", $sku, PDO::PARAM_STR);
+                            $st->bindParam(":price", $price, PDO::PARAM_STR);
+                            $st->bindParam(":qty", $qty, PDO::PARAM_STR);
+                            $st->bindParam(":description", $description, PDO::PARAM_STR);
+                            $st->bindParam(":attribute_value_id", $attributes, PDO::PARAM_INT);
+                            $st->bindParam(":brand_id", $brands, PDO::PARAM_INT);
+                            $st->bindParam(":category_id", $category, PDO::PARAM_INT);
+                            $st->bindParam(":store_id", $store, PDO::PARAM_INT);
+                            $st->bindParam(":status", $availability, PDO::PARAM_INT);
                         }
-                        $st = $db->prepare($sql);
-                        $st->bindParam(":id", $product_id, PDO::PARAM_INT);
-                        $st->bindParam(":name", $product_name, PDO::PARAM_STR);
-                        $st->bindParam(":sku", $sku, PDO::PARAM_STR);
-                        $st->bindParam(":price", $price, PDO::PARAM_STR);
-                        $st->bindParam(":qty", $qty, PDO::PARAM_STR);
-                        $st->bindParam(":image", $file_path, PDO::PARAM_STR);
-                        $st->bindParam(":description", $description, PDO::PARAM_STR);
-                        $st->bindParam(":attribute_value_id", $attributes, PDO::PARAM_INT);
-                        $st->bindParam(":brand_id", $brands, PDO::PARAM_INT);
-                        $st->bindParam(":category_id", $category, PDO::PARAM_INT);
-                        $st->bindParam(":store_id", $store, PDO::PARAM_INT);
-                        $st->bindParam(":status", $availability, PDO::PARAM_INT);
+
                         try{
                             $st->execute();
                             $result['error'] = false;
