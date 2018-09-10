@@ -198,6 +198,7 @@ require_once 'include/db.php';
                                                     <td>'.$results['net_amount'].'</td>
                                                     <td>'.$active.'</td>
                                                     <td>
+                                                        <a target="_blank" href="print_order.php?id='.$results['id'].'" class="btn btn-default"><i class="fa fa-print"></i></a>
                                                         <a href="update_order.php?id='.$results['id'].'" class="btn btn-default"><i class="fa fa-pencil"></i></a> 
                                                         <button type="button" class="btn btn-default" onclick="removeFunc('.$results['id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>
                                                     </td>
