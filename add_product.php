@@ -125,7 +125,7 @@ require_once 'include/db.php';
                                             $html = '<div class="col-md-4"><div class="form-group">
                                                     <label for="groups">'.$results['name'].'</label>
                                                     <select class="form-control select_group" id="attributes_value_id" name="attributes_value_id[]" require>';
-                                            $sqlSub = "SELECT * FROM attribute_value ";
+                                            $sqlSub = "SELECT * FROM attribute_value WHERE attribute_parent_id = $id";
                                             $st2 = $db->prepare($sqlSub);
                                             //$st->bindParam(":attribute_parent_id", $results['id'], PDO::PARAM_INT);
                                             $st2->execute();
