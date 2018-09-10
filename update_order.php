@@ -32,9 +32,25 @@ require_once 'include/db.php';
                             <h3 class="box-title">Add Order</h3>
                         </div>
                         <!-- /.box-header -->
+                        <?php
+                        $id = @$_GET["id"];
+                        $sql = "SELECT *,products.image AS img,orders_item.qty AS order_qty FROM orders
+                                              LEFT JOIN orders_item ON orders.id = orders_item.order_id
+                                              LEFT JOIN products ON  orders_item.product_id = products.id
+                                              WHERE orders.id = $id";
+                        $st = $db->prepare($sql);
+                        $order_results = [];
+                        try{
+                            $st->execute();
+                            $order_results = $st->fetch();
+                            //echo $order_results['rate'];
+                        }catch (PDOException $e){
+                            $e->getMessage();
+                        }
+                        ?>
                         <form role="form" action="orders.php" method="post" class="form-horizontal">
+                            <input type="hidden" name="order_id" value="<?php echo $order_results['order_id']?>">
                             <div class="box-body">
-
                                 <div class="form-group">
                                     <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('Y-m-d') ?></label>
                                 </div>
@@ -47,21 +63,21 @@ require_once 'include/db.php';
                                     <div class="form-group">
                                         <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Name</label>
                                         <div class="col-sm-7">
-                                            <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" autocomplete="off" />
+                                            <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" value="<?php echo $order_results['customer_name']; ?>" autocomplete="off" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Address</label>
                                         <div class="col-sm-7">
-                                            <input type="text" class="form-control" id="customer_address" name="customer_address" placeholder="Enter Customer Address" autocomplete="off">
+                                            <input type="text" class="form-control" id="customer_address" name="customer_address" placeholder="Enter Customer Address" value="<?php echo $order_results['customer_address']; ?>" autocomplete="off">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Phone</label>
                                         <div class="col-sm-7">
-                                            <input type="text" class="form-control" id="customer_phone" name="customer_phone" placeholder="Enter Customer Phone" autocomplete="off">
+                                            <input type="text" class="form-control" id="customer_phone" name="customer_phone" placeholder="Enter Customer Phone" value="<?php echo $order_results['customer_phone']; ?>" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +99,6 @@ require_once 'include/db.php';
                                     <tr id="row_1">
                                         <td>
                                             <select class="form-control select_group products" data-row-id="row_1" id="product_1" name="products" style="width:100%;" required>
-                                                <option value="">Select</option>
                                                 <?php
                                                 $sql = "SELECT * FROM products";
                                                 $st = $db->prepare($sql);
@@ -91,22 +106,22 @@ require_once 'include/db.php';
                                                 try{
                                                     $st->execute();
                                                     $result = $st->fetchAll(PDO::FETCH_ASSOC);
-                                                    foreach ($result as $results){
-                                                        echo '<option value="'.$results['id'].'">'.$results['name'].'</option>';
-                                                    }
+                                                    foreach ($result as $results){ ?>
+                                                        <option value="<?php echo $results['id'] ?>" <?php if($order_results['product_id'] == $results['id']) echo "selected" ?>><?php echo $results['name'] ?></option>
+                                                <?php  }
                                                 }catch (PDOException $e){
                                                     $e->getMessage();
                                                 }
                                                 ?>
                                             </select>
                                         </td>
-                                        <td><input type="text" name="qty" id="qty_1" class="form-control" required"></td>
+                                        <td><input type="text" name="qty" id="qty_1" class="form-control" value="<?php echo $order_results['order_qty']; ?>" required"></td>
                                         <td>
-                                            <input type="text" name="rate" id="rate_1" class="form-control" readonly autocomplete="off">
+                                            <input type="text" name="rate" id="rate_1" class="form-control" readonly value="<?php echo $order_results['rate']; ?>" autocomplete="off">
                                             <input type="hidden" name="rate_value" id="rate_value_1" class="form-control" autocomplete="off">
                                         </td>
                                         <td>
-                                            <input type="text" name="amount" id="amount_1" class="form-control" readonly autocomplete="off">
+                                            <input type="text" name="amount" id="amount_1" class="form-control" value="<?php echo $order_results['amount']; ?>" readonly autocomplete="off">
                                             <input type="hidden" name="amount_value" id="amount_value_1" class="form-control" autocomplete="off">
                                         </td>
                                         <td><button type="button" class="btn btn-default" onclick="removeRow('1')"><i class="fa fa-close"></i></button></td>
@@ -116,9 +131,9 @@ require_once 'include/db.php';
 
                                 <br /> <br/>
                                 <div class="col-md-6 col-xs-12 pull pull-left">
-                                    <div class="form-group" id="product_photo_group" style="display: none">
+                                    <div class="form-group" id="product_photo_group" >
                                         <label for="">Product Photo</label>
-                                        <img id="product_photo" src="" width="300"  class="img-circle1" alt="">
+                                        <img id="product_photo" src="<?php echo $order_results['img']; ?>" width="300"  class="img-circle1" alt="">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-xs-12 pull pull-right">
@@ -139,7 +154,7 @@ require_once 'include/db.php';
                                     <div class="form-group">
                                         <label for="gross_amount" class="col-sm-5 control-label">Gross Amount</label>
                                         <div class="col-sm-7">
-                                            <input type="text" class="form-control" id="gross_amount" name="gross_amount" readonly autocomplete="off">
+                                            <input type="text" class="form-control" id="gross_amount" name="gross_amount" value="<?php echo $order_results['amount']; ?>" readonly autocomplete="off">
                                             <input type="hidden" class="form-control" id="gross_amount_value" name="gross_amount_value" autocomplete="off">
                                         </div>
                                     </div>
@@ -147,8 +162,8 @@ require_once 'include/db.php';
                                         <div class="form-group">
                                             <label for="service_charge" class="col-sm-5 control-label">S-Charge <?php echo $comResults['service_charge_value'] ?> %</label>
                                             <div class="col-sm-7">
-                                                <input type="text" class="form-control" id="service_charge" name="service_charge" readonly autocomplete="off">
-                                                <input type="hidden" class="form-control" id="service_charge_value" name="service_charge_value" autocomplete="off">
+                                                <input type="text" class="form-control" id="service_charge" name="service_charge" value="<?php echo $order_results['service_charge']; ?>"  readonly autocomplete="off">
+                                                <input type="hidden" class="form-control" id="service_charge_value" name="service_charge_value" value="<?php echo $order_results['service_charge_rate']; ?>" autocomplete="off">
                                             </div>
                                         </div>
                                     <?php //endif; ?>
@@ -156,22 +171,21 @@ require_once 'include/db.php';
                                         <div class="form-group">
                                             <label for="vat_charge" class="col-sm-5 control-label">Vat <?php echo $comResults['vat_charge_value'] ?> %</label>
                                             <div class="col-sm-7">
-                                                <input type="text" class="form-control" id="vat_charge" name="vat_charge" readonly autocomplete="off">
-                                                <input type="hidden" class="form-control" id="vat_charge_value" name="vat_charge_value" autocomplete="off">
+                                                <input type="text" class="form-control" id="vat_charge" name="vat_charge" value="<?php echo $order_results['vat_charge']; ?>" readonly autocomplete="off">
+                                                <input type="hidden" class="form-control" id="vat_charge_value" name="vat_charge_value" value="<?php echo $order_results['vat_charge_rate']; ?>" autocomplete="off">
                                             </div>
                                         </div>
                                     <?php //endif; ?>
                                     <div class="form-group">
                                         <label for="discount" class="col-sm-5 control-label">Discount</label>
                                         <div class="col-sm-7">
-                                            <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount"  autocomplete="off">
+                                            <input type="text" class="form-control" id="discount" name="discount" placeholder="Discount" value="<?php echo $order_results['discount']; ?>" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="net_amount" class="col-sm-5 control-label">Net Amount</label>
                                         <div class="col-sm-7">
-                                            <input type="text" class="form-control" id="net_amount" name="net_amount" readonly autocomplete="off">
-                                            <input type="hidden" class="form-control" id="net_amount_value" name="net_amount_value" autocomplete="off">
+                                            <input type="text" class="form-control" id="net_amount" name="net_amount" value="<?php echo $order_results['net_amount']; ?>" readonly autocomplete="off">
                                         </div>
                                     </div>
 
@@ -182,7 +196,7 @@ require_once 'include/db.php';
                             <div class="box-footer">
                                 <input type="hidden" name="service_charge_rate" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
                                 <input type="hidden" name="vat_charge_rate" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
-                                <button name="add_orders" type="submit" class="btn btn-primary">Create Order</button>
+                                <button name="update_orders" type="submit" class="btn btn-primary">Create Order</button>
                                 <a href="orders.php" class="btn btn-warning">Back</a>
                             </div>
                         </form>
@@ -238,6 +252,7 @@ require_once 'include/db.php';
                                 var net_amount = parseFloat(gross_amount) + parseFloat(service) + parseFloat(vat_amount);
                                 var net_amount = net_amount.toFixed(2);
                                 $("#net_amount").val(net_amount);
+                                $("#discount").val('');
                             }
                         }   
                     }

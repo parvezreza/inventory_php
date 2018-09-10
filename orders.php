@@ -27,7 +27,6 @@ require_once 'include/db.php';
                     <div id="messages"></div>
                     <?php
                     if(isset($_POST['add_orders'])){
-                        
                         // Insert Data DB
                         $customer_name = $_POST['customer_name'];
                         $customer_address = $_POST['customer_address'];
@@ -86,71 +85,70 @@ require_once 'include/db.php';
                         try{
                             $st->execute();
                             $result['error'] = false;
-                            $result['messages'] = "Successfully Created";
+                            $result['messages'] = "Successfully orders";
                             $result['id'] = $db->lastInsertId();
                         }
                         catch (PDOException $e){
                             $result['messages'] = $st->errorInfo()[2];
 
                         }
-                    }else if(isset($_POST['update_product'])){ ///update part
-                        $attributes = array();
-                        $file_name = $_FILES['product_image']['name'];
-                        $file_type = $_FILES['product_image']['type'];
-                        $file_size = $_FILES['product_image']['size'];
-                        $file_error = $_FILES['product_image']['error'];
-                        $file_temporary_name = $_FILES['product_image']['tmp_name'];
-                        //get file Extension
-                        $file_extension = explode('.',$file_name);
-                        $file_actual_extension = strtolower(end($file_extension));
-                        //Allow to upload file in database
-                        $allowed_extension = array('jpg','png','gif','jpeg');
-                        //check file extension
-                    
-                        // Insert Data DB
-                        $product_id = $_POST['product_id'];
-                        $product_name = $_POST['product_name'];
-                        $sku = $_POST['sku'];
-                        $price = $_POST['price'];
+                    }else if(isset($_POST['update_orders'])){ ///update part
+                        // update Data DB
+                        $order_id = $_POST['order_id'];
+                        $customer_name = $_POST['customer_name'];
+                        $customer_address = $_POST['customer_address'];
+                        $customer_phone = $_POST['customer_phone'];
+
+                        $product_id = $_POST['products'];
                         $qty = $_POST['qty'];
-                        $description = $_POST['description'];
-                        $attributes = implode(',',$_POST['attributes_value_id']);
-                        $brands = $_POST['brands'];
-                        $category = $_POST['category'];
-                        $store = $_POST['store'];
-                        $availability = $_POST['availability'];
+                        $rate = $_POST['rate'];
+                        $amount = $_POST['amount'];
+
+                        $gross_amount = $_POST['gross_amount'];
+                        $service_charge_rate = $_POST['service_charge_value'];
+                        $service_charge = $_POST['service_charge'];
+                        $vat_charge_rate = $_POST['vat_charge_value'];
+                        $vat_charge = $_POST['vat_charge'];
+                        $net_amount = $_POST['net_amount'];
+                        $discount = $_POST['discount'];
+                        $date_time = date('Y-m-d H:i:s');
                         $result = ['error' => true];
-                        $date = date('Y-m-d H:i:s');
-                        $sql = "UPDATE products SET
-                                      name = :name,
-                                      sku = :sku,
-                                      price = :price,
-                                      qty = :qty,
-                                      description = :description,
-                                      attribute_value_id = :attribute_value_id,
-                                      brand_id = :brand_id, 
-                                      category_id = :category_id, 
-                                      store_id = :store_id, 
-                                      status = :status
-                                WHERE id = :id";
+                        $sql = "UPDATE orders SET
+                                      customer_name = '$customer_name',
+                                      customer_address = '$customer_address',
+                                      customer_phone = '$customer_phone',
+                                      date_time = '$date_time',
+                                      gross_amount = '$gross_amount',
+                                      service_charge_rate = '$service_charge_rate',
+                                      service_charge = '$service_charge', 
+                                      vat_charge_rate = '$vat_charge_rate', 
+                                      vat_charge = '$vat_charge', 
+                                      net_amount = '$net_amount',
+                                      discount = '$discount'
+                                WHERE id = $order_id";
                         $st = $db->prepare($sql);
-                        $st->bindParam(":id", $product_id, PDO::PARAM_INT);
-                        $st->bindParam(":name", $product_name, PDO::PARAM_STR);
-                        $st->bindParam(":sku", $sku, PDO::PARAM_STR);
-                        $st->bindParam(":price", $price, PDO::PARAM_STR);
-                        $st->bindParam(":qty", $qty, PDO::PARAM_STR);
-                        //$st->bindParam(":image", $file_path, PDO::PARAM_STR);
-                        $st->bindParam(":description", $description, PDO::PARAM_STR);
-                        $st->bindParam(":attribute_value_id", $attributes, PDO::PARAM_INT);
-                        $st->bindParam(":brand_id", $brands, PDO::PARAM_INT);
-                        $st->bindParam(":category_id", $category, PDO::PARAM_INT);
-                        $st->bindParam(":store_id", $store, PDO::PARAM_INT);
-                        $st->bindParam(":status", $availability, PDO::PARAM_INT);
                         try{
                             $st->execute();
                             $result['error'] = false;
-                            $result['messages'] = "Successfully Created";
-                            $result['id'] = $db->lastInsertId();
+                            $result['messages'] = "Successfully orders";
+                            $order_id = $db->lastInsertId();
+                        }
+                        catch (PDOException $e){
+                            $result['messages'] = $st->errorInfo()[2];
+
+                        }
+                        // update Orderitem table
+                        $sql = "UPDATE orders_item SET
+                                      product_id = '$product_id',
+                                      qty = '$qty',
+                                      rate = '$rate',
+                                      amount = '$amount'  
+                                WHERE order_id = $order_id";
+                        $st = $db->prepare($sql);
+                        try{
+                            $st->execute();
+                            $result['error'] = false;
+                            $result['messages'] = "Successfully orders_item";
                         }
                         catch (PDOException $e){
                             $result['messages'] = $st->errorInfo()[2];

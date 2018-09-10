@@ -15,7 +15,7 @@ if ($_POST){
     //$data = $_GET['id'];
     $id = $data['product_id'];
     $sql = "SELECT * FROM products WHERE id = $id";
-    $sql = "SELECT p.price,c.service_charge_value,c.vat_charge_value FROM products as p,company as c WHERE p.id = $id";
+    $sql = "SELECT p.name,p.price,p.image,c.service_charge_value,c.vat_charge_value FROM products as p,company as c WHERE p.id = $id";
     $st = $db->prepare($sql);
    // $st->bindParam(':id', $data['product_id'], PDO::PARAM_INT);
     try{
