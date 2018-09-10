@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 100132
 File Encoding         : 65001
 
-Date: 2018-09-10 12:11:55
+Date: 2018-09-10 19:39:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `attributes` (
   `name` varchar(255) NOT NULL,
   `status` tinyint(2) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of attributes
@@ -319,21 +319,15 @@ CREATE TABLE `orders` (
   `paid_status` tinyint(4) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
-INSERT INTO `orders` VALUES ('2', 'tes4', 'parvez', 'kushtia', '34343', '2018-09-05', '100', '13', '13', '10', '10', '120', '3', '1', '1');
-INSERT INTO `orders` VALUES ('3', 'tes4', 'parvez', 'kushtia', '34343', '2018-09-05', '100', '13', '13', '10', '10', '120', '3', '1', '1');
-INSERT INTO `orders` VALUES ('4', 'tes4', 'parvez', 'kushtia', '34343', '2018-09-05', '100', '13', '13', '10', '10', '120', '3', '1', '1');
-INSERT INTO `orders` VALUES ('5', 'ACP76', 'parvez', 'kushtia', '34343', '2018-09-05', '100', '13', '13', '10', '10', '120', '3', '1', '1');
-INSERT INTO `orders` VALUES ('6', 'AKNJ7', 'Shohel Rana', 'natore', '03439843', '2018-09-05 17:23:54', '400', '13', '52.00', '10', '40.00', '400.00', '92', '1', '1');
-INSERT INTO `orders` VALUES ('7', 'A5S8P', 'Shohag Dash', 'Natore', '343798', '2018-09-05 17:29:00', '38000', '13', '4940.00', '10', '3800.00', '46700.00', '40', '1', '1');
-INSERT INTO `orders` VALUES ('8', 'AJ0VS', 'Shohag Dash', 'Natore', '343798', '2018-09-05 17:31:32', '38000', '13', '4940.00', '10', '3800.00', '46700.00', '40', '1', '1');
-INSERT INTO `orders` VALUES ('9', 'AZIJ9', 'Reza', 'Dhaka', '3435', '2018-09-05 17:33:05', '34000', '13', '4420.00', '10', '3400.00', '41820.00', '', '1', '1');
-INSERT INTO `orders` VALUES ('10', 'A0Q97', 'Waliulla', 'Dhaka', '459438543', '2018-09-05 17:34:50', '38000', '13', '4940.00', '10', '3800.00', '46000.00', '740', '1', '1');
-INSERT INTO `orders` VALUES ('11', 'A1031', 'Mamun', 'Kushtia', '989454', '2018-09-05 19:51:23', '76000', '13', '9880.00', '10', '7600.00', '93400.00', '80', '1', '1');
+INSERT INTO `orders` VALUES ('7', 'A5S8P', 'Shohag Dash', 'Natore', '343798', '2018-09-10 14:09:09', 'Array', '5', '10.00', '10', '20.00', '200.00', '30', '1', '1');
+INSERT INTO `orders` VALUES ('10', 'A0Q97', 'Waliulla2', 'Dhaka Kolabagan', '45943854353', '2018-09-10 14:02:42', '100', '5', '5.00', '10', '10.00', '110.00', '5', '1', '1');
+INSERT INTO `orders` VALUES ('11', 'A1031', 'Mamun', 'Kushtia', '989454', '2018-09-10 14:08:41', '38000', '5', '1900.00', '10', '3800.00', '43700.00', '', '1', '1');
+INSERT INTO `orders` VALUES ('12', 'A3S7K', 'Pritylata', 'Dhaka', '0490543', '2018-09-10 14:11:22', '34000', '5', '1700.00', '10', '3400.00', '39000.00', '100', '1', '1');
 
 -- ----------------------------
 -- Table structure for orders_item
@@ -347,7 +341,7 @@ CREATE TABLE `orders_item` (
   `rate` varchar(255) NOT NULL,
   `amount` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orders_item
@@ -355,8 +349,9 @@ CREATE TABLE `orders_item` (
 INSERT INTO `orders_item` VALUES ('1', '7', '0', 'Array', 'Array', 'Array');
 INSERT INTO `orders_item` VALUES ('2', '8', '0', 'Array', 'Array', 'Array');
 INSERT INTO `orders_item` VALUES ('3', '9', '0', '1', '34000', '34000');
-INSERT INTO `orders_item` VALUES ('4', '10', '3', '1', '38000', '38000');
+INSERT INTO `orders_item` VALUES ('4', '10', '13', '1', '100', '100');
 INSERT INTO `orders_item` VALUES ('5', '11', '3', '2', '38000', '76000');
+INSERT INTO `orders_item` VALUES ('6', '12', '2', '1', '34000', '34000');
 
 -- ----------------------------
 -- Table structure for products
@@ -377,7 +372,7 @@ CREATE TABLE `products` (
   `status` tinyint(2) NOT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of products
@@ -431,7 +426,7 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('1', 'adminknst', '$2y$10$yfi5nUQGXUZtMdl27dWAyOd/jMOmATBpiUvJDmUu9hJ5Ro6BE5wsK', 'admin@admin.com', 'john', 'doe', '80789998', '1');
+INSERT INTO `users` VALUES ('1', 'admin', '$2y$10$yfi5nUQGXUZtMdl27dWAyOd/jMOmATBpiUvJDmUu9hJ5Ro6BE5wsK', 'admin@admin.com', 'Parvez', 'Reza', '01743434453', '1');
 INSERT INTO `users` VALUES ('2', 'mamun', '$2y$10$a0TwZeg/FUrpsrMZphUgUu47uIUz0jkBYSj8Evbck37IOk3zLcJqO', 'mamunzet@gmail.com', 'Mamun', 'Rashed', '01722945055', '1');
 
 -- ----------------------------
