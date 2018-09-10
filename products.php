@@ -67,16 +67,18 @@ require_once 'include/db.php';
                         $price = $_POST['price'];
                         $qty = $_POST['qty'];
                         $description = $_POST['description'];
-                        $attributes = implode(',',$_POST['attributes_value_id']);
+                        $attributes = $_POST['attributes_value_id'];
+                        $attributes = json_encode($attributes);
                         $brands = $_POST['brands'];
                         $category = $_POST['category'];
                         $store = $_POST['store'];
                         $availability = $_POST['availability'];
                         $result = ['error' => true];
                         $date = date('Y-m-d H:i:s');
-                        $sql = "INSERT INTO products(name,sku,price,qty,image,description,attribute_value_id,brand_id,category_id,store_id,status,created) VALUES(:name, :sku, :price, :qty, :image, :description, :attribute_value_id, :brand_id, :category_id, :store_id, :status, :created)";
+                        $sql = "INSERT INTO products(name,sku,price,qty,image,description,attribute_value_id,brand_id,category_id,store_id,status,created) VALUES('$product_name', '$sku', '$price', '$qty', '$file_path', '$description', '$attributes', '$brands', '$category', '$store', '$availability', '$date')";
+                        //$sql = "INSERT INTO products(name,sku,price,qty,image,description,attribute_value_id,brand_id,category_id,store_id,status,created) VALUES(:name, :sku, :price, :qty, :image, :description, :attribute_value_id, :brand_id, :category_id, :store_id, :status, :created)";
                         $st = $db->prepare($sql);
-                        $st->bindParam(":name", $product_name, PDO::PARAM_STR);
+                        /*$st->bindParam(":name", $product_name, PDO::PARAM_STR);
                         $st->bindParam(":sku", $sku, PDO::PARAM_STR);
                         $st->bindParam(":price", $price, PDO::PARAM_STR);
                         $st->bindParam(":qty", $qty, PDO::PARAM_STR);
@@ -87,7 +89,7 @@ require_once 'include/db.php';
                         $st->bindParam(":category_id", $category, PDO::PARAM_INT);
                         $st->bindParam(":store_id", $store, PDO::PARAM_INT);
                         $st->bindParam(":status", $availability, PDO::PARAM_INT);
-                        $st->bindParam(":created", $date, PDO::PARAM_STR);
+                        $st->bindParam(":created", $date, PDO::PARAM_STR);*/
                         try{
                             $st->execute();
                             $result['error'] = false;
@@ -137,7 +139,8 @@ require_once 'include/db.php';
                         $price = $_POST['price'];
                         $qty = $_POST['qty'];
                         $description = $_POST['description'];
-                        $attributes = implode(',',$_POST['attributes_value_id']);
+                        $attributes = $_POST['attributes_value_id'];
+                        $attributes = json_encode($attributes);
                         $brands = $_POST['brands'];
                         $category = $_POST['category'];
                         $store = $_POST['store'];
@@ -146,20 +149,20 @@ require_once 'include/db.php';
                         $date = date('Y-m-d H:i:s');
                         if($file_name !=""){ // when photo are not selected
                             $sql = "UPDATE products SET
-                                      name = :name,
-                                      sku = :sku,
-                                      price = :price,
-                                      qty = :qty,
-                                      image = :image,
-                                      description = :description,
-                                      attribute_value_id = :attribute_value_id,
-                                      brand_id = :brand_id, 
-                                      category_id = :category_id, 
-                                      store_id = :store_id, 
-                                      status = :status
-                                WHERE id = :id";
+                                      name = '$product_name',
+                                      sku = '$sku',
+                                      price = '$price',
+                                      qty = '$qty',
+                                      image = '$file_path',
+                                      description = '$description',
+                                      attribute_value_id = '$attributes',
+                                      brand_id = '$brands', 
+                                      category_id = '$category', 
+                                      store_id = '$store', 
+                                      status = '$availability'
+                                WHERE id = $product_id";
                             $st = $db->prepare($sql);
-                            $st->bindParam(":id", $product_id, PDO::PARAM_INT);
+                           /* $st->bindParam(":id", $product_id, PDO::PARAM_INT);
                             $st->bindParam(":name", $product_name, PDO::PARAM_STR);
                             $st->bindParam(":sku", $sku, PDO::PARAM_STR);
                             $st->bindParam(":price", $price, PDO::PARAM_STR);
@@ -170,22 +173,22 @@ require_once 'include/db.php';
                             $st->bindParam(":brand_id", $brands, PDO::PARAM_INT);
                             $st->bindParam(":category_id", $category, PDO::PARAM_INT);
                             $st->bindParam(":store_id", $store, PDO::PARAM_INT);
-                            $st->bindParam(":status", $availability, PDO::PARAM_INT);
+                            $st->bindParam(":status", $availability, PDO::PARAM_INT);*/
                         }else{
                             $sql = "UPDATE products SET
-                                      name = :name,
-                                      sku = :sku,
-                                      price = :price,
-                                      qty = :qty,
-                                      description = :description,
-                                      attribute_value_id = :attribute_value_id,
-                                      brand_id = :brand_id, 
-                                      category_id = :category_id, 
-                                      store_id = :store_id, 
-                                      status = :status
-                                WHERE id = :id";
+                                      name = '$product_name',
+                                      sku = '$sku',
+                                      price = '$price',
+                                      qty = '$qty',
+                                      description = '$description',
+                                      attribute_value_id = '$attributes',
+                                      brand_id = '$brands', 
+                                      category_id = '$category', 
+                                      store_id = '$store', 
+                                      status = '$availability'
+                                WHERE id = $product_id";
                             $st = $db->prepare($sql);
-                            $st->bindParam(":id", $product_id, PDO::PARAM_INT);
+                            /*$st->bindParam(":id", $product_id, PDO::PARAM_INT);
                             $st->bindParam(":name", $product_name, PDO::PARAM_STR);
                             $st->bindParam(":sku", $sku, PDO::PARAM_STR);
                             $st->bindParam(":price", $price, PDO::PARAM_STR);
@@ -195,7 +198,7 @@ require_once 'include/db.php';
                             $st->bindParam(":brand_id", $brands, PDO::PARAM_INT);
                             $st->bindParam(":category_id", $category, PDO::PARAM_INT);
                             $st->bindParam(":store_id", $store, PDO::PARAM_INT);
-                            $st->bindParam(":status", $availability, PDO::PARAM_INT);
+                            $st->bindParam(":status", $availability, PDO::PARAM_INT);*/
                         }
 
                         try{

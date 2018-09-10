@@ -154,29 +154,33 @@ require_once 'include/db.php';
                                         </div>
                                     </div>
                                     <?php
+                                    $attr = json_decode($upResults['attribute_value_id'],true);
+
                                     $sql = "SELECT * FROM attributes"; //ORDER BY id ASC LIMIT 1
                                     $st = $db->prepare($sql);
                                     $result = [];
                                     $resultSub = [];
+                                    $i = 0;
                                     try{
                                         $st->execute();
                                         $result = $st->fetchAll(PDO::FETCH_ASSOC);
                                         foreach($result as $results) {
                                             $id = $results['id'];
-                                            $html = '<div class="col-md-4"><div class="form-group">
+                                            echo '<div class="col-md-4"><div class="form-group"> 
                                                         <label for="groups">'.$results['name'].'</label>
                                                         <select class="form-control select_group" id="attributes_value_id" name="attributes_value_id[]" require>';
-                                                            $sqlSub = "SELECT * FROM attribute_value ";
+                                                            $sqlSub = "SELECT * FROM attribute_value WHERE attribute_parent_id = $id";
                                                             $st2 = $db->prepare($sqlSub);
                                                             //$st->bindParam(":attribute_parent_id", $results['id'], PDO::PARAM_INT);
                                                             $st2->execute();
                                                             $resultSub = $st2->fetchAll(PDO::FETCH_ASSOC);
-                                                             foreach($resultSub as $resultSubs) {
-                                                                 $html .= '<option value="'.$resultSubs['id'].'">'.$resultSubs['value'].'</option>';
+                                                             foreach($resultSub as $resultSubs) { ?>
+                                                                  <option value="<?php echo $resultSubs['id'] ?>" <?php if($resultSubs['id'] == $attr[$i] ) echo "Selected"?>><?php echo $resultSubs['value'] ?></option>
+                                                             <?php
                                                              }
 
-                                             $html .=  '</select></div></div>';
-                                            echo $html;
+                                            echo '</select></div></div>';
+                                            $i++;
                                         }
                                     }
                                     catch (PDOException $e){
