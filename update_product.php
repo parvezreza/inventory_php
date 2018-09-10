@@ -223,16 +223,8 @@ require_once 'include/db.php';
                                         <div class="form-group">
                                             <label for="store">Availability</label>
                                             <select class="form-control" id="availability" name="availability">
-                                                <?php
-                                                if($upResults['status'] == 1){
-                                                    $active = 'Yes';
-                                                }else{
-                                                    $active = 'No';
-                                                }
-                                                ?>
-                                                <option value="<?php echo $active; ?>"><?php echo $active; ?></option>
-                                                <option value="1">Yes</option>
-                                                <option value="0">No</option>
+                                                <option value="1" <?php if($upResults['status'] == 1) echo "selected"?>>Yes</option>
+                                                <option value="0" <?php if($upResults['status'] == 0) echo "selected"?>>No</option>
                                             </select>
                                         </div>
                                     </div>
