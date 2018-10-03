@@ -55,10 +55,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     // Redirect user to welcome page
                     header("location: dashboard.php");
                 }else{
-                    echo $password_err = "The password you entered was not valid.";
+                    $password_err = "The password you entered was not valid.";
                 }
             }else{
-                echo $username_err = "No account found with that username.";
+                $username_err = "No account found with that username.";
             }
         }
         catch (PDOException $e){
@@ -107,6 +107,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg"><?php echo $username_err; echo $password_err?></p>
 
         <form action="" method="post">
             <div class="form-group has-feedback">
